@@ -16,4 +16,12 @@ describe 'Patron' do
     expect(Patron.all).to eq [test_patron]
   end
 
+  it 'allows a patron to check out a book' do
+    test_patron = Patron.new({:name => 'Joe Smith'})
+    test_patron.save
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    expect(test_patron.checkout(test_book)).to eq ["The Giving Tree"]
+  end
+
 end

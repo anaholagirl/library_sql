@@ -1,3 +1,5 @@
+require 'pry'
+
 class Patron
   attr_accessor :name, :id
 
@@ -27,4 +29,13 @@ class Patron
     self.name == another_patron.name
   end
 
+  def checkout(book)
+    my_books = []
+    results = Books.available(book)
+    results.each do |index|
+      my_books << index.name
+    end
+    my_books
+  end
+        # DB.exec("UPDATE books SET availability = 'false' WHERE index.id =")
 end

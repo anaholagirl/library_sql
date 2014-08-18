@@ -1,12 +1,13 @@
 require 'pry'
 
 class Books
-  attr_accessor :name, :author, :id
+  attr_accessor :name, :author, :id, :availability
 
   def initialize(attributes)
     @name = attributes[:name]
     @author = attributes[:author]
     @id = attributes[:id].to_i
+    @availability = true
   end
 
   def self.all
@@ -17,9 +18,20 @@ class Books
       name = result['name']
       author = result['author']
       id = result['id'].to_i
-      entire_selection << Books.new({:name => name, :author => author, :id => id})
+      availability = result['true']
+      entire_selection << Books.new({:name => name, :author => author, :id => id, :availability => availability})
     end
     entire_selection
+  end
+
+  def self.available(input_book)
+    avail_books = []
+    Books.all.each do |book|
+      if input_book.availability == true
+        avail_books << book
+      end
+    end
+    avail_books
   end
 
   def self.delete(input_name)
@@ -57,7 +69,7 @@ class Books
   end
 
   def save
-    results = DB.exec("INSERT INTO books (name, author) VALUES ('#{@name}', '#{@author}') RETURNING id;")
+    results = DB.exec("INSERT INTO books (name, author, availability) VALUES ('#{@name}', '#{@author}', '#{@availability}') RETURNING id;")
     @id = results.first['id'].to_i
   end
 
@@ -65,4 +77,6 @@ class Books
   def ==(another_book)
     self.name == another_book.name && self.author == another_book.author
   end
+
+
 end

@@ -42,4 +42,10 @@ describe 'Books' do
     # Books.find_by_name(test_book.name)
     expect(Books.find_by_author(test_book.author)).to eq [test_book.name]
   end
+
+  it 'tells you if a book is available or not' do
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    expect(Books.available(test_book)).to eq [test_book]
+  end
 end
