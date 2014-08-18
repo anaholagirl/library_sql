@@ -26,4 +26,9 @@ class Author
   def ==(another_author)
     self.name == another_author.name
   end
+
+  def add_book(book)
+    DB.exec("INSERT INTO books_authors (books_id, authors_id) VALUES (#{book.id}, #{@id});")
+  end
 end
+
