@@ -40,9 +40,19 @@ class Books
         end
       end
     end
-    # name = book['name']
-    # author = book['author']
-    # id = book['id'].to_i
+    book_arr
+  end
+
+  def self.find_by_author(input_author)
+    book_arr = []
+    Books.all.each do |book|
+      if input_author == book.author
+        results = DB.exec("SELECT * FROM books WHERE author = '#{input_author}';")
+        results.each do |result|
+          book_arr << result['name']
+        end
+      end
+    end
     book_arr
   end
 

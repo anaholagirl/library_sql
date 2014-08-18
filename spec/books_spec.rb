@@ -33,4 +33,13 @@ describe 'Books' do
     # Books.find_by_name(test_book.name)
     expect(Books.find_by_name(test_book.name)).to eq [test_book.name]
   end
+
+  it 'finds a book from the books table with a author' do
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    test_book1 = Books.new({:name => "The Notebook", :author => 'Nicholas Sparks'})
+    test_book1.save
+    # Books.find_by_name(test_book.name)
+    expect(Books.find_by_author(test_book.author)).to eq [test_book.name]
+  end
 end
