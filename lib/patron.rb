@@ -29,13 +29,19 @@ class Patron
     self.name == another_patron.name
   end
 
-  def checkout(book)
+  def checkout(input_book)
     my_books = []
-    results = Books.available(book)
-    results.each do |index|
-      my_books << index.name
+    if input_book.availability
+      DB.exec("UPDATE books SET availability = 'f' WHERE id = '#{input_book.id}';")
+    end
+    Books.all.each do |book|
+      if input_book == book
+        my_books << book
+      end
     end
     my_books
   end
-        # DB.exec("UPDATE books SET availability = 'false' WHERE index.id =")
+
 end
+
+

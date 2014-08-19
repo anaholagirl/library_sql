@@ -21,7 +21,6 @@ describe 'Patron' do
     test_patron.save
     test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
     test_book.save
-    expect(test_patron.checkout(test_book)).to eq ["The Giving Tree"]
+    expect(test_patron.checkout(test_book)).to eq [test_book]
   end
-
 end
