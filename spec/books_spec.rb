@@ -46,6 +46,16 @@ describe 'Books' do
   it 'tells you if a book is available or not' do
     test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
     test_book.save
-    expect(Books.available(test_book)).to eq [test_book]
+    expect(test_book.availability).to eq true
   end
+
+  it 'changes the availability from true to false' do
+    test_patron = Patron.new({:name => 'Joe Smith'})
+    test_patron.save
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    test_patron.checkout(test_book)
+    expect(Books.all.first.availability).to eq false
+  end
+
 end
