@@ -7,31 +7,34 @@ class Books
     @name = attributes[:name]
     @author = attributes[:author]
     @id = attributes[:id].to_i
-    @availability = true
+    if attributes[:availability] != nil
+      @availability = attributes[:availability]
+    else
+      @availability = true
+    end
   end
 
   def self.all
     entire_selection = []
     results = DB.exec("SELECT * FROM books;")
-    # binding.pry
     results.each do |result|
       name = result['name']
       author = result['author']
       id = result['id'].to_i
-      availability = result['true']
+      availability = result['availability'] == 't' ? true : false
       entire_selection << Books.new({:name => name, :author => author, :id => id, :availability => availability})
     end
     entire_selection
   end
 
   def self.available(input_book)
-    avail_books = []
+    @avail_books = []
     Books.all.each do |book|
       if input_book.availability == true
-        avail_books << book
+        @avail_books << book
       end
     end
-    avail_books
+    @avail_books
   end
 
   def self.delete(input_name)
@@ -78,5 +81,12 @@ class Books
     self.name == another_book.name && self.author == another_book.author
   end
 
+  def self.out_of_library(book_name)
+    Books.all.each do |book|
+      if book_name == book
+        book.availability
+      end
+    end
+  end
 
 end
