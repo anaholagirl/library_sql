@@ -46,16 +46,6 @@ describe 'Books' do
   it 'tells you if a book is available or not' do
     test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
     test_book.save
-    expect(test_book.availability).to eq true
-  end
-
-  it 'changes the availability from true to false' do
-    test_patron = Patron.new({:name => 'Joe Smith'})
-    test_patron.save
-    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
-    test_book.save
-    test_patron.checkout(test_book)
-    expect(Books.all.first.availability).to eq false
   end
 
   it 'gives the amount of the same book the library has' do
@@ -64,6 +54,23 @@ describe 'Books' do
     test_book1 = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
     test_book1.save
     expect(test_book.copies).to eq 2
+  end
+
+  it 'should add a copy of a book to the same book' do
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    expect(Books.all).to eq [test_book]
+    test_book.add_copies(1)
+    expect(test_book.get_copies).to eq 2
+  end
+
+  it 'allows a patron to check out a book' do
+    test_patron = Patron.new({:name => 'Joe Smith'})
+    test_patron.save
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    test_book.checkout(test_patron.id)
+    expect(Books.checked_out).to eq [test_book]
   end
 
 end

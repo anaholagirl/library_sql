@@ -16,11 +16,17 @@ describe 'Patron' do
     expect(Patron.all).to eq [test_patron]
   end
 
-  it 'allows a patron to check out a book' do
-    test_patron = Patron.new({:name => 'Joe Smith'})
-    test_patron.save
-    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
-    test_book.save
-    expect(test_patron.checkout(test_book)).to eq [test_book]
-  end
+
+
+  # it 'gives a history of all the books a patron has checked out' do
+  #   test_patron = Patron.new({:name => 'Joe Smith'})
+  #   test_patron.save
+  #   test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+  #   test_book.save
+  #   test_book1 = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+  #   test_book1.save
+  #   test_patron.checkout(test_book)
+  #   test_patron.checkout(test_book1)
+  #   expect(test_patron.history).to eq [test_book, test_book1]
+  # end
 end

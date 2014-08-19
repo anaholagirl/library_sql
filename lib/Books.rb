@@ -58,6 +58,17 @@ class Books
     book_arr
   end
 
+  def self.checked_out
+    checked_books = []
+    results = DB.exec("SELECT * FROM checkouts JOIN books ON (books.id = checkouts.books_id);")
+    results.each do |book|
+      name = book['name']
+      author = book['author']
+      checked_books << Books.new({:name => name, :author => author})
+    end
+    checked_books
+  end
+
   def self.find_by_author(input_author)
     book_arr = []
     Books.all.each do |book|
@@ -74,6 +85,7 @@ class Books
   def save
     results = DB.exec("INSERT INTO books (name, author, availability) VALUES ('#{@name}', '#{@author}', '#{@availability}') RETURNING id;")
     @id = results.first['id'].to_i
+    DB.exec("INSERT INTO copies (books_id, copies) VALUES (#{@id}, 1);")
   end
 
 
@@ -99,4 +111,18 @@ class Books
     all_copies.length
   end
 
+  def add_copies(num)
+    copies = num + self.get_copies
+    DB.exec("UPDATE copies SET copies = #{copies} WHERE books_id = #{@id};")
+  end
+
+  def get_copies
+    results = DB.exec("SELECT copies FROM copies WHERE books_id = #{@id};")
+    copies = results.first['copies'].to_i
+  end
+
+  def checkout(patron_id)
+    DB.exec("INSERT INTO checkouts (patrons_id, books_id) VALUES (#{patron_id}, #{@id});")
+    self.add_copies(-1)
+  end
 end
