@@ -89,4 +89,14 @@ class Books
     end
   end
 
+  def copies
+    all_copies = []
+    Books.all.each do |book|
+      if book.name == self.name && book.author == self.author
+        all_copies << book
+      end
+    end
+    all_copies.length
+  end
+
 end

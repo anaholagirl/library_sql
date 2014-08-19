@@ -58,4 +58,12 @@ describe 'Books' do
     expect(Books.all.first.availability).to eq false
   end
 
+  it 'gives the amount of the same book the library has' do
+    test_book = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book.save
+    test_book1 = Books.new({:name => "The Giving Tree", :author => 'Shel Silverstein'})
+    test_book1.save
+    expect(test_book.copies).to eq 2
+  end
+
 end
